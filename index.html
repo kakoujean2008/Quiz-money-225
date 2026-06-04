@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz-Money225</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SPLASH SCREEN
+══════════════════════════════════════════ -->
+<div id="splash-screen" class="screen active">
+  <div class="splash-bg"></div>
+  <div class="splash-content">
+    <div class="splash-penguin">🐧</div>
+    <div class="logo-orb">
+      <span class="logo-icon">💰</span>
+    </div>
+    <h1 class="logo-title">Quiz<span>Money</span><sup>225</sup></h1>
+    <p class="logo-sub">Joue. Gagne. Encaisse.</p>
+    <div class="splash-loader">
+      <div class="loader-bar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     AUTH SCREEN
+══════════════════════════════════════════ -->
+<div id="auth-screen" class="screen">
+  <div class="auth-bg"></div>
+  <div class="auth-container">
+    <div class="auth-logo">
+      <span>💰</span> Quiz<span class="gold">Money</span>225
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Connexion</button>
+      <button class="auth-tab" data-tab="register">Inscription</button>
+    </div>
+
+    <!-- Login -->
+    <div id="login-form" class="auth-form active">
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" id="login-email" placeholder="Email" />
+      </div>
+      <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="login-password" placeholder="Mot de passe" />
+      </div>
+      <button class="btn-primary" onclick="login()">Se connecter</button>
+      <div id="login-error" class="form-error"></div>
+    </div>
+
+    <!-- Register -->
+    <div id="register-form" class="auth-form">
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" id="reg-pseudo" placeholder="Pseudo" />
+      </div>
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" id="reg-email" placeholder="Email" />
+      </div>
+      <div class="input-group">
+        <i class="fa fa-phone"></i>
+        <input type="tel" id="reg-phone" placeholder="Téléphone (ex: 07XXXXXXXX)" />
+      </div>
+      <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="reg-password" placeholder="Mot de passe" />
+      </div>
+      <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="reg-confirm" placeholder="Confirmer mot de passe" />
+      </div>
+      <button class="btn-primary" onclick="register()">Créer mon compte</button>
+      <div id="reg-error" class="form-error"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HOME SCREEN
+══════════════════════════════════════════ -->
+<div id="home-screen" class="screen">
+  <div class="home-bg"></div>
+
+  <!-- Header -->
+  <header class="home-header">
+    <div class="user-info">
+      <div class="user-avatar" id="home-avatar">👤</div>
+      <div class="user-details">
+        <span class="user-pseudo" id="home-pseudo">Joueur</span>
+        <span class="user-level" id="home-level">Niveau 1</span>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="logout()"><i class="fa fa-sign-out-alt"></i></button>
+  </header>
+
+  <!-- Balances -->
+  <div class="balance-cards">
+    <div class="balance-card game">
+      <div class="balance-icon">🎮</div>
+      <div class="balance-info">
+        <span class="balance-label">Solde Jeu</span>
+        <span class="balance-amount" id="home-game-balance">0</span>
+        <span class="balance-currency">FCFA</span>
+      </div>
+    </div>
+    <div class="balance-card withdraw">
+      <div class="balance-icon">💳</div>
+      <div class="balance-info">
+        <span class="balance-label">Solde Retrait</span>
+        <span class="balance-amount" id="home-withdraw-balance">0</span>
+        <span class="balance-currency">FCFA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Bonus -->
+  <div id="daily-bonus-btn" class="daily-bonus-banner" onclick="claimDailyBonus()">
+    <span>🎁</span> <span>Récupérer mon bonus quotidien +100 FCFA</span>
+  </div>
+
+  <!-- Nav Grid -->
+  <div class="nav-grid">
+    <button class="nav-btn solo" onclick="showScreen('solo-screen')">
+      <div class="nav-btn-icon">🎮</div>
+      <span>Jouer Solo</span>
+    </button>
+    <button class="nav-btn tournament" onclick="showScreen('tournament-screen')">
+      <div class="nav-btn-icon">🏆</div>
+      <span>Tournois</span>
+    </button>
+    <button class="nav-btn wallet" onclick="showScreen('wallet-screen')">
+      <div class="nav-btn-icon">💼</div>
+      <span>Wallet</span>
+    </button>
+    <button class="nav-btn withdraw" onclick="showScreen('withdraw-screen')">
+      <div class="nav-btn-icon">💸</div>
+      <span>Retirer</span>
+    </button>
+    <button class="nav-btn recharge" onclick="showScreen('recharge-screen')">
+      <div class="nav-btn-icon">⚡</div>
+      <span>Recharger</span>
+    </button>
+    <button class="nav-btn community" onclick="showScreen('community-screen')">
+      <div class="nav-btn-icon">💬</div>
+      <span>Communauté</span>
+    </button>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="leaderboard-section">
+    <h2 class="section-title"><span>🏆</span> TOP 10 Joueurs</h2>
+    <div id="leaderboard-list" class="leaderboard-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SOLO QUIZ SCREEN
+══════════════════════════════════════════ -->
+<div id="solo-screen" class="screen">
+  <div class="screen-bg"></div>
+  <div class="screen-header">
+    <button class="btn-back" onclick="confirmQuitSolo()"><i class="fa fa-arrow-left"></i></button>
+    <h2>Quiz Solo</h2>
+    <div class="session-gain-badge">
+      🎮 <span id="session-gain-display">0</span> FCFA
+    </div>
+    <!-- Hidden: kept for JS compatibility -->
+  </div>
+
+  <!-- Pre-game -->
+  <div id="solo-pregame" class="solo-container">
+    <div class="pregame-card">
+      <div class="pregame-icon">🎯</div>
+      <h2>Quiz Solo</h2>
+      <div class="pregame-rules">
+        <div class="rule-item"><span>💰</span> Coût : <strong>100 FCFA</strong></div>
+        <div class="rule-item"><span>❓</span> 10 questions</div>
+        <div class="rule-item"><span>⏱️</span> 10 secondes par question</div>
+        <div class="rule-item"><span>✅</span> +25 FCFA par bonne réponse</div>
+        <div class="rule-item"><span>💡</span> Encaissez à tout moment !</div>
+      </div>
+      <div class="pregame-balance">
+        Votre solde jeu : <strong id="pregame-balance">0</strong> FCFA
+      </div>
+      <button class="btn-primary" onclick="startSoloGame()">Lancer la partie</button>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="solo-game" class="solo-container hidden">
+    <div class="game-header-info">
+      <div class="game-stat">
+        <span class="gs-label">Question</span>
+        <span class="gs-value"><span id="q-current">1</span>/10</span>
+      </div>
+      <div class="timer-ring">
+        <svg viewBox="0 0 44 44">
+          <circle cx="22" cy="22" r="18" fill="none" stroke="#222" stroke-width="4"/>
+          <circle id="timer-circle" cx="22" cy="22" r="18" fill="none" stroke="#FFD700" stroke-width="4"
+            stroke-dasharray="113.1" stroke-dashoffset="0" stroke-linecap="round"
+            transform="rotate(-90 22 22)"/>
+        </svg>
+        <span id="timer-display">10</span>
+      </div>
+      <div class="game-stat">
+        <span class="gs-label">Score</span>
+        <span class="gs-value" id="q-score">0</span>
+      </div>
+    </div>
+
+    <div class="question-card">
+      <div class="question-category" id="q-category">Général</div>
+      <p class="question-text" id="q-text">Question...</p>
+    </div>
+
+    <div class="answers-grid" id="answers-grid"></div>
+
+    <div class="game-actions">
+      <button class="btn-encaiss" onclick="encaisser()">
+        <i class="fa fa-check-circle"></i> ENCAISSER <span id="encaiss-amount">0</span> FCFA
+      </button>
+      <button class="btn-quit-game" onclick="confirmQuitSolo()">
+        <i class="fa fa-times"></i> Quitter
+      </button>
+    </div>
+  </div>
+
+  <!-- Result: Win / Encaissement -->
+  <div id="solo-result" class="solo-container hidden">
+    <div class="result-card result-win">
+      <div class="result-fireworks">🎆🎇✨</div>
+      <div class="result-emoji" id="result-emoji">🎉</div>
+      <h2 id="result-title">Partie terminée !</h2>
+      <div class="result-stats">
+        <div class="result-stat">
+          <span class="rs-label">Score</span>
+          <span class="rs-value" id="r-score">0/10</span>
+        </div>
+        <div class="result-stat highlight">
+          <span class="rs-label">Gains encaissés</span>
+          <span class="rs-value" id="r-gain">0 FCFA</span>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="startSoloGame()">Rejouer</button>
+      <button class="btn-secondary" onclick="showScreen('home-screen')">Accueil</button>
+    </div>
+  </div>
+
+  <!-- Result: Défaite (mauvaise réponse / timeout) -->
+  <div id="solo-result-lose" class="solo-container hidden">
+    <div class="result-card result-lose">
+      <div class="lose-skull">💀</div>
+      <div class="lose-lightning">⚡</div>
+      <h2 class="lose-title">GAME OVER</h2>
+      <p class="lose-subtitle" id="lose-subtitle">Mauvaise réponse !</p>
+      <div class="lose-stats">
+        <div class="lose-stat">
+          <span class="ls-label">Score final</span>
+          <span class="ls-value" id="lose-score">0/10</span>
+        </div>
+        <div class="lose-stat red">
+          <span class="ls-label">Gains perdus</span>
+          <span class="ls-value" id="lose-amount">0 FCFA</span>
+        </div>
+      </div>
+      <div class="lose-msg">Tu étais si proche… 😤 Retente ta chance !</div>
+      <button class="btn-primary" onclick="startSoloGame()">🔁 Rejouer</button>
+      <button class="btn-secondary" onclick="showScreen('home-screen')">Accueil</button>
+    </div>
+  </div>
+
+  <!-- Result: Encaissé avant de perdre -->
+  <div id="solo-result-encaiss" class="solo-container hidden">
+    <div class="result-card result-encaiss">
+      <div class="encaiss-coins">💰💰💰</div>
+      <div class="encaiss-badge">✅</div>
+      <h2 class="encaiss-title">ENCAISSÉ !</h2>
+      <p class="encaiss-subtitle">Tu as été malin(e) 🧠</p>
+      <div class="encaiss-stats">
+        <div class="encaiss-stat green">
+          <span class="es-label">Montant encaissé</span>
+          <span class="es-value" id="encaiss-final-amount">0 FCFA</span>
+        </div>
+        <div class="encaiss-stat">
+          <span class="es-label">Score</span>
+          <span class="es-value" id="encaiss-final-score">0/10</span>
+        </div>
+      </div>
+      <div class="encaiss-msg">Argent ajouté à ton solde retrait 🎯</div>
+      <button class="btn-primary" onclick="startSoloGame()">🎮 Rejouer</button>
+      <button class="btn-secondary" onclick="showScreen('home-screen')">Accueil</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TOURNAMENT SCREEN
+══════════════════════════════════════════ -->
+<div id="tournament-screen" class="screen">
+  <div class="screen-bg"></div>
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('home-screen')"><i class="fa fa-arrow-left"></i></button>
+    <h2>Tournois</h2>
+    <div></div>
+  </div>
+  <div class="screen-content">
+    <div id="tournament-list" class="tournament-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     WALLET SCREEN
+══════════════════════════════════════════ -->
+<div id="wallet-screen" class="screen">
+  <div class="screen-bg"></div>
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('home-screen')"><i class="fa fa-arrow-left"></i></button>
+    <h2>Wallet</h2>
+    <div></div>
+  </div>
+  <div class="screen-content">
+    <div class="wallet-balances">
+      <div class="wallet-card">
+        <span class="wc-label">Solde Jeu</span>
+        <span class="wc-amount" id="wallet-game">0</span>
+        <span class="wc-cur">FCFA</span>
+      </div>
+      <div class="wallet-card gold">
+        <span class="wc-label">Solde Retrait</span>
+        <span class="wc-amount" id="wallet-withdraw">0</span>
+        <span class="wc-cur">FCFA</span>
+      </div>
+    </div>
+
+    <h3 class="section-title"><i class="fa fa-history"></i> Historique</h3>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="loadTransactions('all', this)">Tout</button>
+      <button class="filter-tab" onclick="loadTransactions('recharge', this)">Recharges</button>
+      <button class="filter-tab" onclick="loadTransactions('withdrawal', this)">Retraits</button>
+      <button class="filter-tab" onclick="loadTransactions('game', this)">Jeu</button>
+    </div>
+    <div id="transaction-list" class="transaction-list"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     RECHARGE SCREEN
+══════════════════════════════════════════ -->
+<div id="recharge-screen" class="screen">
+  <div class="screen-bg"></div>
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('home-screen')"><i class="fa fa-arrow-left"></i></button>
+    <h2>Recharger</h2>
+    <div></div>
+  </div>
+  <div class="screen-content">
+    <p class="section-desc">Choisissez votre mode de paiement :</p>
+
+    <div class="payment-methods">
+      <div class="payment-method" onclick="selectPayment('Wave', this)">
+        <div class="pm-logo pm-logo-wave">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Wave_logo_2022.svg/200px-Wave_logo_2022.svg.png" alt="Wave" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <span class="pm-logo-fallback" style="display:none">🌊</span>
+        </div>
+        <span class="pm-name">Wave</span>
+      </div>
+      <div class="payment-method" onclick="selectPayment('MTN MoMo', this)">
+        <div class="pm-logo pm-logo-mtn">
+          <span class="pm-logo-text-mtn">MTN<br><small>MOBILE MONEY</small></span>
+        </div>
+        <span class="pm-name">MTN Money</span>
+      </div>
+      <div class="payment-method" onclick="selectPayment('Orange Money', this)">
+        <div class="pm-logo pm-logo-orange">
+          <span class="pm-logo-text-orange">Orange<br>Money</span>
+        </div>
+        <span class="pm-name">Orange Money</span>
+      </div>
+      <div class="payment-method" onclick="selectPayment('Moov', this)">
+        <div class="pm-logo pm-logo-moov">
+          <span class="pm-logo-text-moov">MOOV<br>Money</span>
+        </div>
+        <span class="pm-name">Moov Money</span>
+      </div>
+    </div>
+
+    <div id="recharge-form-section" class="recharge-form hidden">
+      <h3 id="selected-method-title">Mode sélectionné</h3>
+      <div class="input-group">
+        <i class="fa fa-coins"></i>
+        <input type="number" id="recharge-amount" placeholder="Montant (100 - 10 000 FCFA)" min="100" max="10000" />
+      </div>
+      <div class="quick-amounts">
+        <button onclick="setAmount(100)">100</button>
+        <button onclick="setAmount(500)">500</button>
+        <button onclick="setAmount(1000)">1 000</button>
+        <button onclick="setAmount(5000)">5 000</button>
+      </div>
+      <button class="btn-primary" onclick="processRecharge()">
+        <i class="fa fa-check-circle"></i> Confirmer la recharge
+      </button>
+      <div id="recharge-spinner" class="spinner hidden"></div>
+      <div id="recharge-msg" class="form-success hidden"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     WITHDRAW SCREEN
+══════════════════════════════════════════ -->
+<div id="withdraw-screen" class="screen">
+  <div class="screen-bg"></div>
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('home-screen')"><i class="fa fa-arrow-left"></i></button>
+    <h2>Retrait</h2>
+    <div></div>
+  </div>
+  <div class="screen-content">
+    <div class="withdraw-balance-hero">
+      <div class="wbh-label">💳 Solde disponible au retrait</div>
+      <div class="wbh-amount" id="withdraw-balance-display">0 FCFA</div>
+    </div>
+
+    <div class="input-group">
+      <i class="fa fa-phone"></i>
+      <input type="tel" id="withdraw-phone" placeholder="Téléphone" readonly />
+    </div>
+    <div class="input-group">
+      <i class="fa fa-coins"></i>
+      <input type="number" id="withdraw-amount" placeholder="Montant (FCFA)" min="500" />
+    </div>
+
+    <p class="section-desc" style="margin-top:16px">Choisissez votre mode de retrait :</p>
+    <div class="payment-methods withdraw-methods">
+      <div class="payment-method" onclick="selectWithdrawMethod('Wave', this)">
+        <div class="pm-logo pm-logo-wave">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Wave_logo_2022.svg/200px-Wave_logo_2022.svg.png" alt="Wave" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+          <span class="pm-logo-fallback" style="display:none">🌊</span>
+        </div>
+        <span class="pm-name">Wave</span>
+      </div>
+      <div class="payment-method" onclick="selectWithdrawMethod('MTN MoMo', this)">
+        <div class="pm-logo pm-logo-mtn">
+          <span class="pm-logo-text-mtn">MTN<br><small>MOBILE MONEY</small></span>
+        </div>
+        <span class="pm-name">MTN Money</span>
+      </div>
+      <div class="payment-method" onclick="selectWithdrawMethod('Orange Money', this)">
+        <div class="pm-logo pm-logo-orange">
+          <span class="pm-logo-text-orange">Orange<br>Money</span>
+        </div>
+        <span class="pm-name">Orange Money</span>
+      </div>
+      <div class="payment-method" onclick="selectWithdrawMethod('Moov', this)">
+        <div class="pm-logo pm-logo-moov">
+          <span class="pm-logo-text-moov">MOOV<br>Money</span>
+        </div>
+        <span class="pm-name">Moov Money</span>
+      </div>
+    </div>
+    <input type="hidden" id="withdraw-method" value="" />
+
+    <button class="btn-primary" style="margin-top:16px" onclick="processWithdraw()">
+      <i class="fa fa-paper-plane"></i> Demander le retrait
+    </button>
+    <div id="withdraw-msg" class="form-error hidden"></div>
+    <div id="withdraw-success" class="form-success hidden"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     COMMUNITY SCREEN
+══════════════════════════════════════════ -->
+<div id="community-screen" class="screen">
+  <div class="screen-bg"></div>
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('home-screen')"><i class="fa fa-arrow-left"></i></button>
+    <h2>Communauté</h2>
+    <div></div>
+  </div>
+
+  <div id="community-locked" class="community-locked hidden">
+    <div class="lock-card">
+      <div class="lock-icon">🔒</div>
+      <h3>Accès Communauté</h3>
+      <p>Débloque l'accès à la communauté pour <strong>1000 FCFA</strong></p>
+      <button class="btn-primary" onclick="unlockCommunity()">Débloquer pour 1000 FCFA</button>
+    </div>
+  </div>
+
+  <div id="community-chat" class="community-chat hidden">
+    <div id="chat-messages" class="chat-messages"></div>
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Écrire un message..." maxlength="200" />
+      <button class="btn-send" onclick="sendCommunityMessage()"><i class="fa fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ADMIN SCREEN
+══════════════════════════════════════════ -->
+<div id="admin-screen" class="screen">
+  <div class="screen-bg"></div>
+  <div class="screen-header">
+    <button class="btn-back" onclick="showScreen('home-screen')"><i class="fa fa-arrow-left"></i></button>
+    <h2>⚙️ Admin Panel</h2>
+    <div></div>
+  </div>
+  <div class="screen-content">
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="showAdminTab('users', this)">Joueurs</button>
+      <button class="admin-tab" onclick="showAdminTab('recharges', this)">Recharges</button>
+      <button class="admin-tab" onclick="showAdminTab('withdrawals', this)">Retraits</button>
+      <button class="admin-tab" onclick="showAdminTab('questions', this)">Questions</button>
+      <button class="admin-tab" onclick="showAdminTab('stats', this)">Stats</button>
+    </div>
+
+    <!-- Users Tab -->
+    <div id="admin-users" class="admin-tab-content active">
+      <div id="admin-users-list"></div>
+    </div>
+
+    <!-- Recharges Tab -->
+    <div id="admin-recharges" class="admin-tab-content">
+      <div id="admin-recharges-list"></div>
+    </div>
+
+    <!-- Withdrawals Tab -->
+    <div id="admin-withdrawals" class="admin-tab-content">
+      <div id="admin-withdrawals-list"></div>
+    </div>
+
+    <!-- Questions Tab -->
+    <div id="admin-questions" class="admin-tab-content">
+      <div class="add-question-form">
+        <h3>Ajouter une question</h3>
+        <div class="input-group"><i class="fa fa-question"></i><input type="text" id="aq-text" placeholder="Question" /></div>
+        <div class="input-group"><i class="fa fa-check"></i><input type="text" id="aq-a" placeholder="Réponse A" /></div>
+        <div class="input-group"><i class="fa fa-times"></i><input type="text" id="aq-b" placeholder="Réponse B" /></div>
+        <div class="input-group"><i class="fa fa-times"></i><input type="text" id="aq-c" placeholder="Réponse C" /></div>
+        <div class="input-group"><i class="fa fa-times"></i><input type="text" id="aq-d" placeholder="Réponse D" /></div>
+        <div class="input-group">
+          <i class="fa fa-star"></i>
+          <select id="aq-correct">
+            <option value="a">A est correcte</option>
+            <option value="b">B est correcte</option>
+            <option value="c">C est correcte</option>
+            <option value="d">D est correcte</option>
+          </select>
+        </div>
+        <div class="input-group"><i class="fa fa-tag"></i><input type="text" id="aq-cat" placeholder="Catégorie" /></div>
+        <button class="btn-primary" onclick="addQuestion()">Ajouter</button>
+        <div id="aq-msg" class="form-success hidden"></div>
+      </div>
+      <div id="admin-questions-list" class="mt20"></div>
+    </div>
+
+    <!-- Stats Tab -->
+    <div id="admin-stats" class="admin-tab-content">
+      <div id="admin-stats-content"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════ -->
+
+<!-- Recharge Confirmation Modal -->
+<div id="modal-recharge-confirm" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3>💳 Confirmer la recharge</h3>
+    <div class="recharge-confirm-details">
+      <div class="rcd-row"><span>👤 Pseudo</span><strong id="recharge-confirm-pseudo"></strong></div>
+      <div class="rcd-row"><span>📱 Téléphone</span><strong id="recharge-confirm-phone"></strong></div>
+      <div class="rcd-row"><span>💳 Mode</span><strong id="recharge-confirm-method"></strong></div>
+      <div class="rcd-row highlight"><span>💰 Montant</span><strong id="recharge-confirm-amount"></strong></div>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px">En cliquant sur Payer, vous serez redirigé vers Djamo pour finaliser votre paiement.</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-recharge-confirm')">Annuler</button>
+      <button class="btn-primary" onclick="confirmRechargeAndPay()">💳 Payer maintenant</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Quit Modal -->
+<div id="modal-quit" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3>⚠️ Quitter la partie ?</h3>
+    <p>Vos gains actuels (<strong id="modal-quit-gain">0</strong> FCFA) seront encaissés automatiquement.</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-quit')">Continuer</button>
+      <button class="btn-primary" onclick="quitAndEncaiss()">Encaisser & Quitter</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Balance Modal -->
+<div id="modal-edit-balance" class="modal-overlay hidden">
+  <div class="modal-card">
+    <h3>Modifier le solde</h3>
+    <p id="modal-edit-user-name">Joueur</p>
+    <div class="input-group">
+      <i class="fa fa-gamepad"></i>
+      <input type="number" id="modal-game-balance" placeholder="Solde jeu" />
+    </div>
+    <div class="input-group">
+      <i class="fa fa-money-bill"></i>
+      <input type="number" id="modal-withdraw-balance" placeholder="Solde retrait" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('modal-edit-balance')">Annuler</button>
+      <button class="btn-primary" onclick="saveBalance()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
